@@ -1,16 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-<<<<<<< HEAD
-import albumData from '/Users/jakegahart/web-dev/bloc/bloc-jams-react/src/data/albums';
-
-class Library extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { albums: albumData };
-  }
-
-  render() {
-=======
 import albumData from './../data/albums';
 
 class Library extends Component {
@@ -20,7 +9,6 @@ class Library extends Component {
    }
 
    render() {
->>>>>>> checkpoint-5-components-library
     return (
       <section className='library'>
         {
@@ -34,14 +22,8 @@ class Library extends Component {
           )
         }
       </section>
-<<<<<<< HEAD
     );
   }
 }
-=======
-     );
-   }
- }
->>>>>>> checkpoint-5-components-library
 
 export default Library;
