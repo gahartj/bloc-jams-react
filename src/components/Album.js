@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import albumData from '/Users/jakegahart/web-dev/bloc/bloc-jams-react/src/data/albums';
 
 class Album extends Component {
@@ -38,5 +39,17 @@ class Album extends Component {
     );
   }
 }
+=======
+
+class Album extends Component {
+   render() {
+     return (
+       <section className="album">
+        {this.props.match.params.slug} Album will go here
+       </section>
+     );
+   }
+ }
+>>>>>>> checkpoint-5-components-library
 
 export default Album;
