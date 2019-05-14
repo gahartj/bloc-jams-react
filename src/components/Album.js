@@ -45,8 +45,17 @@ class Album extends Component {
     }
   }
 
-  handlePlayHover() {
-    console.log('it worked!');
+  handleMouseEnter(index) {
+    console.log(index);
+    document.getElementById(index + "songNumber").className = "icon ion-ios-play" ;
+    document.getElementById(index + "songNumber").innerHTML = "";
+  }
+
+  handleMouseLeave(index) {
+    console.log('the mouse has left the building');
+    document.getElementById(index + "songNumber").innerHTML = index+1;
+    document.getElementById(index + "songNumber").className = "";
+
   }
 
   render() {
@@ -69,8 +78,10 @@ class Album extends Component {
         </colgroup>
         <tbody>
           {this.state.album.songs.map( (song, index) =>
-            <tr className="song" key={index} onClick={() => this.handleSongClick(song)}>
-              {index+1} {song.title} {song.duration}
+            <tr className="song" key={index} onClick={() => this.handleSongClick(song)} onMouseEnter={() => this.handleMouseEnter(index)} onMouseLeave={() => this.handleMouseLeave(index)}>
+              <td ><span id={index + "songNumber"} className="">{index+1}</span></td>
+              <td>{song.title}</td>
+              <td>{song.duration}</td>
             </tr>
           )}
         </tbody>
