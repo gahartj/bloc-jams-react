@@ -10,10 +10,13 @@ class Album extends Component {
       return album.slug === this.props.match.params.slug
     });
 
+    const blankClassNames = album.songs.map( x => "");
+
     this.state = {
       album: album,
       currentSong: album.songs[0],
-      isPlaying: false
+      isPlaying: false,
+      classNames: blankClassNames
     };
 
     this.audioElement = document.createElement('audio');
@@ -35,28 +38,66 @@ class Album extends Component {
     this.setState({ currentSong: song });
   }
 
-  handleSongClick(song) {
+  handleSongClick(song, index) {
     const isSameSong = this.state.currentSong === song;
     if ( this.state.isPlaying && isSameSong) {
       this.pause();
+
+
+
     } else {
       if (!isSameSong) { this.setSong(song); }
-      this.play();
+        this.play();
     }
+
+    let pauseArray = [];
+      for (let i = 0; i < this.state.classNames.length; i++) {
+        if (i === index) {
+          pauseArray.push("icon ion-ios-pause");
+        } else {
+          pauseArray.push("");
+      }
+    }
+    this.setState({ classNames: pauseArray });
   }
 
   handleMouseEnter(index) {
-    console.log(index);
-    document.getElementById(index + "songNumber").className = "icon ion-ios-play" ;
-    document.getElementById(index + "songNumber").innerHTML = "";
+    console.log(this.state.classNames);
+
+    let newArray = this.state.classNames.map((className, i) => {
+      if (className === "icon ion-ios-pause") {
+        return "icon ion-ios-pause";
+      } else if (i === index) {
+        return "icon ion-ios-play";
+      } else {
+        return "";
+      }
+    })
+
+    this.setState({ classNames: newArray });
   }
 
   handleMouseLeave(index) {
     console.log('the mouse has left the building');
-    document.getElementById(index + "songNumber").innerHTML = index+1;
-    document.getElementById(index + "songNumber").className = "";
 
+    let emptyArray = [];
+    for (let i = 0; i <this.state.classNames.length; i++) {
+      if (this.state.classNames[i] === "icon ion-ios-pause") {
+        emptyArray.push("icon ion-ios-pause");
+      } else {
+        emptyArray.push("");
+      }
+    }
+
+    this.setState ({ classNames: emptyArray});
   }
+//
+// let icons = album.songs.length(index);
+
+//   <span className="">{index+1}</span>
+//   <span className="">{index+1}</span>
+//   <span className="">{index+1}</span>
+//   <span className="">{index+1}</span>
 
   render() {
     return (
@@ -78,8 +119,8 @@ class Album extends Component {
         </colgroup>
         <tbody>
           {this.state.album.songs.map( (song, index) =>
-            <tr className="song" key={index} onClick={() => this.handleSongClick(song)} onMouseEnter={() => this.handleMouseEnter(index)} onMouseLeave={() => this.handleMouseLeave(index)}>
-              <td ><span id={index + "songNumber"} className="">{index+1}</span></td>
+            <tr className="song" key={index} onClick={() => this.handleSongClick(song, index)} onMouseEnter={() => this.handleMouseEnter(index)} onMouseLeave={() => this.handleMouseLeave(index)} >
+              <td><span className={this.state.classNames[index]}>{index+1}</span></td>
               <td>{song.title}</td>
               <td>{song.duration}</td>
             </tr>
