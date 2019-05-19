@@ -10,7 +10,9 @@ class Album extends Component {
       return album.slug === this.props.match.params.slug
     });
 
-    const blankClassNames = album.songs.map( x => "");
+    const blankClassNames = album.songs.map((song, index) => {
+      return "";
+    });
 
     this.state = {
       album: album,
@@ -42,62 +44,51 @@ class Album extends Component {
     const isSameSong = this.state.currentSong === song;
     if ( this.state.isPlaying && isSameSong) {
       this.pause();
-
-
-
     } else {
       if (!isSameSong) { this.setSong(song); }
         this.play();
     }
 
-    let pauseArray = [];
-      for (let i = 0; i < this.state.classNames.length; i++) {
-        if (i === index) {
-          pauseArray.push("icon ion-ios-pause");
+    let clickArray = this.state.classNames.map((className, i) => {
+        if (i === index && className === "icon ion-ios-pause") {
+          return "icon ion-ios-play";
+        } else if (i === index) {
+          return "icon ion-ios-pause";
         } else {
-          pauseArray.push("");
+          return "";
       }
-    }
-    this.setState({ classNames: pauseArray });
+    })
+
+    this.setState({ classNames: clickArray });
   }
 
   handleMouseEnter(index) {
-    console.log(this.state.classNames);
+     let newArray = this.state.classNames.map((className, i) => {
+       if (i === index && className === "icon ion-ios-play") {
+         return "icon ion-ios-play";
+     } else if (i === index && className === "icon ion-ios-pause") {
+       return "icon ion-ios-pause";
+     } else if (i === index && className === "") {
+       return "icon ion-ios-play";
+     } else {
+       return "";
+     }
+   })
+     this.setState({ classNames: newArray });
+  }
 
-    let newArray = this.state.classNames.map((className, i) => {
-      if (className === "icon ion-ios-pause") {
+  handleMouseLeave(index) {
+    let emptyArray = this.state.classNames.map((className, i) => {
+      if (i === index && className === "icon ion-ios-pause") {
         return "icon ion-ios-pause";
-      } else if (i === index) {
+      } else if (i === index && className === "icon ion-ios-play") {
         return "icon ion-ios-play";
       } else {
         return "";
       }
     })
-
-    this.setState({ classNames: newArray });
-  }
-
-  handleMouseLeave(index) {
-    console.log('the mouse has left the building');
-
-    let emptyArray = [];
-    for (let i = 0; i <this.state.classNames.length; i++) {
-      if (this.state.classNames[i] === "icon ion-ios-pause") {
-        emptyArray.push("icon ion-ios-pause");
-      } else {
-        emptyArray.push("");
-      }
-    }
-
     this.setState ({ classNames: emptyArray});
   }
-//
-// let icons = album.songs.length(index);
-
-//   <span className="">{index+1}</span>
-//   <span className="">{index+1}</span>
-//   <span className="">{index+1}</span>
-//   <span className="">{index+1}</span>
 
   render() {
     return (
