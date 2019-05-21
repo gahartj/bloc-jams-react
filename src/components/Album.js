@@ -16,7 +16,7 @@ class Album extends Component {
 
     this.state = {
       album: album,
-      currentSong: album.songs[0],
+      currentSong: null,
       isPlaying: false,
       classNames: blankClassNames
     };
@@ -62,12 +62,12 @@ class Album extends Component {
     this.setState({ classNames: clickArray });
   }
 
-  handleMouseEnter(index) {
+  handleMouseEnter(index, song) {
      let onHover = this.state.classNames.map((className, i) => {
-       if (className === "icon ion-ios-play") {
-         return "icon ion-ios-play";
-     } else if (className === "icon ion-ios-pause"){
-       return "icon ion-ios-pause";
+       if (this.state.isPlaying && this.state.album.songs[i] === this.state.currentSong) {
+         return "icon ion-ios-pause";
+     } else if (!this.state.isPlaying && this.state.album.songs[i] === this.state.currentSong){
+       return "icon ion-ios-play";
      } else if (i === index && className === "") {
        return "icon ion-ios-play";
      } else {
@@ -77,12 +77,12 @@ class Album extends Component {
      this.setState({ classNames: onHover });
   }
 
-  handleMouseLeave(index) {
+  handleMouseLeave(index, song) {
     let offHover = this.state.classNames.map((className, i) => {
-      if (className === "icon ion-ios-play" && this.state.isPlaying === true) {
-        return "icon ion-ios-play";
-      } else if (className === "icon ion-ios-pause" && this.state.isPlaying === false){
+      if (this.state.isPlaying && this.state.album.songs[i] === this.state.currentSong) {
         return "icon ion-ios-pause";
+      } else if (!this.state.isPlaying && this.state.album.songs[i] === this.state.currentSong){
+        return "icon ion-ios-play";
       } else {
         return "";
       }
@@ -110,8 +110,8 @@ class Album extends Component {
         </colgroup>
         <tbody>
           {this.state.album.songs.map( (song, index) =>
-            <tr className="song" key={index} onClick={() => this.handleSongClick(song, index)} onMouseEnter={() => this.handleMouseEnter(index)} onMouseLeave={() => this.handleMouseLeave(index)} >
-              <td><span className={this.state.classNames[index]}>{index+1}</span></td>
+            <tr className="song" key={index} onClick={() => this.handleSongClick(song, index)} onMouseEnter={() => this.handleMouseEnter(index, song)} onMouseLeave={() => this.handleMouseLeave(index, song)} >
+              <td><span className={this.state.classNames[index]}>{this.state.classNames[index] === "" ? index+1 : ""}</span></td>
               <td>{song.title}</td>
               <td>{song.duration}</td>
             </tr>
