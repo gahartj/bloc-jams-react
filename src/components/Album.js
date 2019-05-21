@@ -50,9 +50,9 @@ class Album extends Component {
     }
 
     let clickArray = this.state.classNames.map((className, i) => {
-        if (i === index && className === "icon ion-ios-pause") {
+        if (i === index && this.state.isPlaying === true) {
           return "icon ion-ios-play";
-        } else if (i === index) {
+        } else if (i === index && this.state.isPlaying === false) {
           return "icon ion-ios-pause";
         } else {
           return "";
@@ -63,10 +63,10 @@ class Album extends Component {
   }
 
   handleMouseEnter(index) {
-     let newArray = this.state.classNames.map((className, i) => {
-       if (i === index && className === "icon ion-ios-play") {
+     let onHover = this.state.classNames.map((className, i) => {
+       if (className === "icon ion-ios-play") {
          return "icon ion-ios-play";
-     } else if (i === index && className === "icon ion-ios-pause") {
+     } else if (className === "icon ion-ios-pause"){
        return "icon ion-ios-pause";
      } else if (i === index && className === "") {
        return "icon ion-ios-play";
@@ -74,20 +74,20 @@ class Album extends Component {
        return "";
      }
    })
-     this.setState({ classNames: newArray });
+     this.setState({ classNames: onHover });
   }
 
   handleMouseLeave(index) {
-    let emptyArray = this.state.classNames.map((className, i) => {
-      if (i === index && className === "icon ion-ios-pause") {
-        return "icon ion-ios-pause";
-      } else if (i === index && className === "icon ion-ios-play") {
+    let offHover = this.state.classNames.map((className, i) => {
+      if (className === "icon ion-ios-play" && this.state.isPlaying === true) {
         return "icon ion-ios-play";
+      } else if (className === "icon ion-ios-pause" && this.state.isPlaying === false){
+        return "icon ion-ios-pause";
       } else {
         return "";
       }
     })
-    this.setState ({ classNames: emptyArray});
+    this.setState ({ classNames: offHover});
   }
 
   render() {
