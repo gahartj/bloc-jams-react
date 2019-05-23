@@ -20,6 +20,7 @@ class Album extends Component {
       currentSong: null,
       currentTime: 0,
       duration: album.songs[0].duration,
+      currentVolume: 5,
       isPlaying: false,
       classNames: blankClassNames
     };
@@ -35,16 +36,21 @@ class Album extends Component {
       },
       durationchange: e => {
         this.setState({ duration: this.audioElement.duration });
+      },
+      volumechange: e => {
+        this.setState({ currentVolume: this.audioElement.currentVolume});
       }
     };
     this.audioElement.addEventListener('timeupdate', this.eventListeners.timeupdate);
     this.audioElement.addEventListener('durationchange', this.eventListeners.durationchange);
+    this.audioElement.addEventListener('volumechange', this.eventListeners.volumechange);
   }
 
   componentWillUnmount() {
      this.audioElement.src = null;
      this.audioElement.removeEventListener('timeupdate', this.eventListeners.timeupdate);
      this.audioElement.removeEventListener('durationchange', this.eventListeners.durationchange);
+     this.audioElement.removeEventListener('volumechange', this.eventListeners.volumechange);
    }
 
   play() {
@@ -85,26 +91,32 @@ class Album extends Component {
   }
 
   handlePrevClick() {
-      const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
-      const newIndex = Math.max(0, currentIndex - 1);
-      const newSong = this.state.album.songs[newIndex];
-      this.setSong(newSong);
-      this.play();
+    const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
+    const newIndex = Math.max(0, currentIndex - 1);
+    const newSong = this.state.album.songs[newIndex];
+    this.setSong(newSong);
+    this.play();
   }
 
   handleNextClick(index) {
-      const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
-      const newIndex = Math.min(currentIndex + 1, this.state.album.songs.length-1);
-      const newSong = this.state.album.songs[newIndex];
-      this.setSong(newSong);
-      this.play();
+    const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
+    const newIndex = Math.min(currentIndex + 1, this.state.album.songs.length-1);
+    const newSong = this.state.album.songs[newIndex];
+    this.setSong(newSong);
+    this.play();
   }
 
   handleTimeChange(e) {
-     const newTime = this.audioElement.duration * e.target.value;
-     this.audioElement.currentTime = newTime;
-     this.setState({ currentTime: newTime });
-   }
+    const newTime = this.audioElement.duration * e.target.value;
+    this.audioElement.currentTime = newTime;
+    this.setState({ currentTime: newTime });
+  }
+
+  handleVolumeChange(e) {
+    const newVolume = e.target.value / 10;
+    this.audioElement.volume = newVolume;
+    this.setState({ currentVolume: newVolume });
+  }
 
   handleMouseEnter(index, song) {
      let onHover = this.state.classNames.map((className, i) => {
@@ -166,10 +178,12 @@ class Album extends Component {
           currentSong={this.state.currentSong}
           currentTime={this.audioElement.currentTime}
           duration={this.audioElement.duration}
+          currentVolume={this.audioElement.currentVolume}
           handleSongClick={() => this.handleSongClick(this.state.currentSong)}
           handlePrevClick={() => this.handlePrevClick()}
           handleNextClick={() => this.handleNextClick()}
           handleTimeChange={(e) => this.handleTimeChange(e)}
+          handleVolumeChange={(e) => this.handleVolumeChange(e)}
         />
       </section>
     );
