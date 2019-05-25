@@ -113,16 +113,23 @@ class Album extends Component {
   }
 
   formatTime(sec) {
-    let hrs = Math.floor(sec / 3600);
-    let min = Math.floor((sec - (hrs * 3600)) / 60);
-    let seconds = sec - (hrs * 3600) - (min * 60);
-    seconds = Math.round(seconds * 100) / 100
+    let songTime = parseInt(sec, 10);
+    if (typeof songTime == 'number') {
+      let min = Math.floor(songTime / 60);
+      let seconds = songTime - (min * 60);
+      seconds = Math.round(seconds * 100) / 100
 
-    let result = (hrs < 10 ? "0" + hrs : hrs);
-    result += "-" + (min < 10 ? "0" + min : min);
-    result += "-" + (seconds < 10 ? "0" + seconds : seconds);
-    return result;
+      let result = (min < 10 ? "0" + min : min);
+      result += ":" + (seconds < 10 ? "0" + seconds : seconds);
+      return result;
+    } else {
+      return "--:--"
+    }
   }
+
+  // formatTime(sec) {
+  //   return(sec - (sec % 60)) / 60 + (9 < sec ? ':' : ':0') + sec;
+  // }
 
   handleVolumeChange(e) {
     const newVolume = e.target.value / 10;
@@ -180,7 +187,7 @@ class Album extends Component {
             <tr className="song" key={index} onClick={() => this.handleSongClick(song, index)} onMouseEnter={() => this.handleMouseEnter(index, song)} onMouseLeave={() => this.handleMouseLeave(index, song)} >
               <td><span className={this.state.classNames[index]}>{this.state.classNames[index] === "" ? index+1 : ""}</span></td>
               <td>{song.title}</td>
-              <td>{song.duration}</td>
+              <td>{this.formatTime(song.duration)}</td>
             </tr>
           )}
         </tbody>
