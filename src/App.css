@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background-color: black;
+  color: lime;
 }
 
 .App-logo {
@@ -30,4 +32,51 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+nav {
+  margin: auto;
+  padding: 10px;
+  color: lime;
+}
+
+.album-pic {
+  max-width: 45%;
+  height: auto;
+}
+
+#song-list {
+  color: lime;
+}
+
+table {
+  border-collapse: collapse;
+  display:flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+td {
+  border: 1px solid white;
+  padding: 10px;
+}
+
+#time-control {
+  float: none;
+  background-color: black;
+}
+
+#volume-control {
+  float: none;
+  background-color: black;
+}
+
+.player-bar {
+  background-color: black;
+}
+
+#buttons {
+  float: none;
+  padding: 15px 32px;
+  font-size: 24px;
 }
